@@ -7,12 +7,12 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'project' })
-export class Project {
+export class ProjectEntity {
   @PrimaryGeneratedColumn()
   id: string;
 
   @Column({ name: 'name', nullable: false })
-  nome: string;
+  name: string;
 
   @Column({ name: 'link', nullable: true })
   link: string;
