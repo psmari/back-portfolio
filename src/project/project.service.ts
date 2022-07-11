@@ -1,5 +1,5 @@
 import { ProjectEntity } from './entities/project.entity';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Repository } from 'typeorm';
@@ -9,26 +9,42 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class ProjectService {
   constructor(
     @InjectRepository(ProjectEntity)
-    private readonly projectEntity: Repository<ProjectEntity>,
+    private readonly projectRepository: Repository<ProjectEntity>,
   ) {}
 
   async create(createProjectDto: CreateProjectDto): Promise<ProjectEntity> {
-    return this.projectEntity.save(this.projectEntity.create(createProjectDto));
+    return this.projectRepository.save(this.projectRepository.create(createProjectDto));
   }
 
-  findAll() {
-    return `This action returns all project`;
+  async findAll(): Promise<ProjectEntity[]> {
+    return await this.projectRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} project`;
+  async findOne(id: number) {
+    return await this.projectRepository.findOneBy({id});
   }
 
-  update(id: number, updateProjectDto: UpdateProjectDto) {
-    return `This action updates a #${id} project`;
+  async update(id: number, updateProjectDto: UpdateProjectDto) {
+    const project = await this.projectRepository.findOneBy({id});
+
+    this.checkIfExist(project);
+
+    return await this.projectRepository.update(id, updateProjectDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} project`;
+  async remove(id: number) {
+    const project = await this.projectRepository.findOneBy({id});
+
+    this.checkIfExist(project);
+
+    project.archived = true;
+
+    return await this.projectRepository.update(id, project);
+  }
+
+  private checkIfExist(project: ProjectEntity) {
+    if (!project) {
+      throw new HttpException('Usuário não encontrado', HttpStatus.BAD_REQUEST);
+    }
   }
 }

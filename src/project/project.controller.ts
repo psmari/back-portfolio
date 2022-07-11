@@ -8,27 +8,27 @@ export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
   @Post()
-  create(@Body() createProjectDto: CreateProjectDto) {
-    return this.projectService.create(createProjectDto);
+  async create(@Body() createProjectDto: CreateProjectDto) {
+    return await this.projectService.create(createProjectDto);
   }
 
   @Get()
-  findAll() {
-    return this.projectService.findAll();
+  async findAll() {
+    return await this.projectService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.projectService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.projectService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
-    return this.projectService.update(+id, updateProjectDto);
+  async update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
+    return await this.projectService.update(+id, updateProjectDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.projectService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.projectService.remove(+id);
   }
 }
