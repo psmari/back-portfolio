@@ -1,0 +1,11 @@
+version: '3'
+services:
+  mysqlsrv:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+      MYSQL_DATABASE: "portfolio"
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./config:/tmp/config
