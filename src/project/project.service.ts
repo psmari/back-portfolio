@@ -1,5 +1,5 @@
 import { ProjectEntity } from './entities/project.entity';
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Repository } from 'typeorm';
@@ -44,7 +44,7 @@ export class ProjectService {
 
   private checkIfExist(project: ProjectEntity) {
     if (!project) {
-      throw new HttpException('Usuário não encontrado', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Projeto não encontrado', HttpStatus.BAD_REQUEST);
     }
   }
 }
